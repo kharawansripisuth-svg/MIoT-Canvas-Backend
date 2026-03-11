@@ -1,0 +1,91 @@
+# version: '3.8'
+
+services:
+  # Node.js API
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    env_file: .env
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    depends_on:
+      - postgres
+      - influxdb
+    networks:
+      - iot-network
+
+  # PostgreSQL Database
+# PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=${PG_USER}
+      - POSTGRES_PASSWORD=${PG_PASS}
+      - POSTGRES_DB=${PG_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      # เพิ่มบรรทัดนี้ (สมมติว่าไฟล์ SQL อยู่ในโฟลเดอร์ชื่อ init-db)
+      - ./init-db:/docker-entrypoint-initdb.d/
+    networks:
+      - iot-network
+
+  # InfluxDB Database
+  influxdb:
+    image: influxdb:1.8-alpine
+    platform: linux/amd64
+    # platform: linux/amd64  ** uncomment this line if you use mac na **
+    environment:
+      - INFLUXDB_DB=${INFLUX_DB}
+      - INFLUXDB_ADMIN_USER=${INFLUX_USER}
+      - INFLUXDB_ADMIN_PASSWORD=${INFLUX_PASS}
+    ports:
+      - "8086:8086"
+    networks:
+      - iot-network
+
+  # MQTT Broker (สำหรับ Mock Data)
+  mqtt:
+    image: eclipse-mosquitto:latest
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+    networks:
+      - iot-network
+  telegraf:
+    image: telegraf:1.28-alpine
+    platform: linux/amd64
+    # platform: linux/amd64  ** uncomment this line if you use mac na **
+    volumes:
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    depends_on:
+      - mqtt
+      - influxdb
+    networks:
+      - iot-network
+  mock-energy:
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+    command: python dataMock_2.py
+    depends_on:
+      - mqtt
+    networks:
+      - iot-network
+
+  mock-sensors:
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+    command: python dataMock_3.py
+    depends_on:
+      - mqtt
+    networks:
+      - iot-network
+
+networks:
+  iot-network:
+    driver: bridge
