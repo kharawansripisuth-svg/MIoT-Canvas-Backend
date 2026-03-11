@@ -1,0 +1,462 @@
+@import "tailwindcss";
+
+/* ==========================================================
+   MIIoT Design Tokens
+   Figma: https://www.figma.com/design/9I2wOiKzKA7JI0FRA5zpNw
+   ========================================================== */
+
+
+/* ─────────────────────────────────────────────────────────
+   1) @theme — Tailwind v4 Namespace Tokens
+      สร้าง utility class อัตโนมัติ เช่น
+      --color-primary  → bg-primary, text-primary, border-primary
+      --font-sans      → font-sans
+      --text-sm        → text-sm
+      --shadow-card    → shadow-card
+      --radius-md      → rounded-md
+   ───────────────────────────────────────────────────────── */
+@theme {
+  /* ─── Brand Colors ─── */
+  --color-primary: #1677FF;
+  --color-primary-hover: #4096FF;
+  --color-primary-active: #0958D9;
+  --color-primary-bg: #E6F4FF;
+
+  /* ─── Status Colors ─── */
+  --color-success: #52C41A;
+  --color-warning: #FAAD14;
+  --color-error: #FF4D4F;
+  --color-info: #1677FF;
+
+  /* ─── Text Colors ─── */
+  --color-text-primary: #141414;
+  --color-text-secondary: #595959;
+  --color-text-tertiary: #8C8C8C;
+  --color-text-placeholder: #BFBFBF;
+
+  /* ─── Border Colors ─── */
+  --color-border: #D9D9D9;
+  --color-border-light: #F0F0F0;
+
+  /* ─── Background Colors ─── */
+  --color-bg-page: #F5F7FA;
+  --color-bg-card: #FFFFFF;
+  --color-bg-login: #F0F5FF;
+
+  /* ─── Stat Card Backgrounds ─── */
+  --color-stat-blue: #E6F4FF;
+  --color-stat-green: #F6FFED;
+  --color-stat-orange: #FFF7E6;
+  --color-stat-red: #FFF1F0;
+
+  /* ─── Sidebar Colors ─── */
+  --color-sidebar-bg: #001529;
+  --color-sidebar-text: rgba(255, 255, 255, 0.65);
+  --color-sidebar-text-active: #FFFFFF;
+  --color-sidebar-text-muted: rgba(255, 255, 255, 0.35);
+  --color-sidebar-text-dim: rgba(255, 255, 255, 0.45);
+  --color-sidebar-hover: rgba(255, 255, 255, 0.06);
+  --color-sidebar-active-bg: rgba(22, 119, 255, 0.15);
+  --color-sidebar-border: rgba(255, 255, 255, 0.08);
+
+  /* ─── Connection Badges ─── */
+  --color-mqtt: #1677FF;
+  --color-rest: #52C41A;
+  --color-modbus: #722ED1;
+  --color-opcua: #FA8C16;
+
+  /* ─── Font Family (→ font-sans) ─── */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* ─── Font Sizes (→ text-xs, text-sm, text-base …) ─── */
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1rem;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.25rem;
+  --text-base: 1rem;
+  --text-base--line-height: 1.5rem;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: 1.75rem;
+  --text-xl: 1.25rem;
+  --text-xl--line-height: 1.75rem;
+  --text-2xl: 1.5rem;
+  --text-2xl--line-height: 2rem;
+  --text-3xl: 1.875rem;
+  --text-3xl--line-height: 2.25rem;
+
+  /* ─── Shadows (→ shadow-card, shadow-login, shadow-button) ─── */
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-login: 0 8px 30px rgba(0, 0, 0, 0.08);
+  --shadow-button: 0 4px 12px rgba(22, 119, 255, 0.25);
+
+  /* ─── Border Radius (→ rounded-sm, rounded-md, rounded-lg, rounded-xl) ─── */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+}
+
+
+/* ─────────────────────────────────────────────────────────
+   2) :root — Regular CSS Variables (ไม่สร้าง utility class)
+      ใช้ผ่าน var() ใน CSS / component เท่านั้น
+   ───────────────────────────────────────────────────────── */
+:root {
+  --sidebar-logo-gradient: linear-gradient(135deg, #1677FF 0%, #4096FF 100%);
+  --sidebar-avatar-gradient: linear-gradient(135deg, #1677FF 0%, #722ED1 100%);
+  --sidebar-width-expanded: 240px;
+  --sidebar-width-collapsed: 64px;
+  --sidebar-item-height: 38px;
+  --sidebar-logo-height: 64px;
+  --sidebar-user-height: 61px;
+}
+
+
+/* ─────────────────────────────────────────────────────────
+   3) Global Base Styles
+   ───────────────────────────────────────────────────────── */
+body {
+  font-family: var(--font-sans);
+  color: var(--color-text-primary);
+  background: var(--color-bg-page);
+}
+
+
+/* ─────────────────────────────────────────────────────────
+   4) @utility — Custom Utility Classes
+      ใช้ได้เหมือน Tailwind class ทั่วไป รองรับ variants
+   ───────────────────────────────────────────────────────── */
+@utility layout-root {
+  min-height: 100vh;
+  background: var(--color-bg-page);
+}
+
+@utility layout-main {
+  margin-left: var(--sidebar-width-collapsed);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+
+/* ─────────────────────────────────────────────────────────
+   5) Layout — Header & Content
+   ───────────────────────────────────────────────────────── */
+.layout-header {
+  height: 56px;
+  background: var(--color-bg-card);
+  border-bottom: 1px solid var(--color-border-light);
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+  flex-shrink: 0;
+}
+
+.breadcrumb {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  font-weight: 400;
+}
+
+.breadcrumb-active {
+  color: var(--color-text-primary);
+}
+
+.layout-content {
+  flex: 1;
+  padding: 1.5rem;
+  overflow: auto;
+}
+
+
+/* ─────────────────────────────────────────────────────────
+   6) Sidebar — Container
+   ───────────────────────────────────────────────────────── */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--sidebar-width-collapsed);
+  background: var(--color-sidebar-bg);
+  color: var(--color-sidebar-text);
+  display: flex;
+  flex-direction: column;
+  transition: width 0.25s ease, box-shadow 0.25s ease;
+  overflow: hidden;
+  z-index: 100;
+}
+
+.sidebar.expanded {
+  width: var(--sidebar-width-expanded);
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.25);
+}
+
+
+/* ─────────────────────────────────────────────────────────
+   7) Sidebar — Logo
+   ───────────────────────────────────────────────────────── */
+.sidebar-logo {
+  height: var(--sidebar-logo-height);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-bottom: 1px solid var(--color-sidebar-border);
+  flex-shrink: 0;
+}
+
+.logo-icon-zone {
+  width: var(--sidebar-width-collapsed);
+  min-width: var(--sidebar-width-collapsed);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  border-radius: var(--radius-md);
+  background: var(--sidebar-logo-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-text {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.logo-title {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--color-sidebar-text-active);
+  letter-spacing: 1px;
+}
+
+.logo-version {
+  font-size: var(--text-xs);
+  color: var(--color-sidebar-text-muted);
+}
+
+
+/* ─────────────────────────────────────────────────────────
+   8) Sidebar — Navigation Sections
+   ───────────────────────────────────────────────────────── */
+.sidebar-nav {
+  flex: 1;
+  padding: 0.5rem 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.nav-section {
+  padding: 1rem 1.5rem 0.5rem;
+  min-height: 14px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.system-section {
+  margin-top: 0.25rem;
+  border-top: 1px solid var(--color-sidebar-hover);
+  padding-top: 0.75rem;
+}
+
+.nav-section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  color: var(--color-sidebar-text-muted);
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: opacity 0.2s ease;
+}
+
+.sidebar:not(.expanded) .nav-section-label {
+  opacity: 0;
+}
+
+
+/* ─────────────────────────────────────────────────────────
+   9) Sidebar — Nav Items
+   ───────────────────────────────────────────────────────── */
+.nav-item {
+  display: flex;
+  align-items: center;
+  height: var(--sidebar-item-height);
+  color: var(--color-sidebar-text);
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+  position: relative;
+}
+
+.nav-item:hover {
+  background: var(--color-sidebar-hover);
+  color: var(--color-sidebar-text-active);
+}
+
+.nav-item.active {
+  color: var(--color-primary);
+  background: none;
+}
+
+/* Active icon pill — collapsed mode */
+.nav-item.active .nav-icon {
+  position: relative;
+}
+
+.nav-item.active .nav-icon::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px;
+  height: var(--sidebar-item-height);
+  background: var(--color-sidebar-active-bg);
+  border-radius: var(--radius-md);
+  z-index: -1;
+}
+
+/* Active bg — expanded mode */
+.sidebar.expanded .nav-item.active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0.5rem;
+  right: 0.5rem;
+  bottom: 0;
+  background: var(--color-sidebar-active-bg);
+  border-radius: var(--radius-md);
+  z-index: -1;
+}
+
+.sidebar.expanded .nav-item.active .nav-icon::before {
+  display: none;
+}
+
+
+/* ─────────────────────────────────────────────────────────
+   10) Sidebar — Icon & Label
+   ───────────────────────────────────────────────────────── */
+.nav-icon {
+  width: var(--sidebar-width-collapsed);
+  min-width: var(--sidebar-width-collapsed);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.nav-label {
+  font-size: var(--text-sm);
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.nav-item.active .nav-label {
+  font-weight: 500;
+  color: var(--color-sidebar-text-active);
+}
+
+
+/* ─────────────────────────────────────────────────────────
+   11) Sidebar — User Section
+   ───────────────────────────────────────────────────────── */
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: var(--sidebar-user-height);
+  border-top: 1px solid var(--color-sidebar-border);
+  flex-shrink: 0;
+}
+
+.user-avatar-zone {
+  width: var(--sidebar-width-collapsed);
+  min-width: var(--sidebar-width-collapsed);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  border-radius: 50%;
+  background: var(--sidebar-avatar-gradient);
+  color: var(--color-sidebar-text-active);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.user-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  white-space: nowrap;
+}
+
+.user-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-sidebar-text-active);
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-role {
+  font-size: 11px;
+  color: var(--color-sidebar-text-dim);
+  line-height: 1.3;
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  color: var(--color-sidebar-text-dim);
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s, background 0.15s;
+  flex-shrink: 0;
+}
+
+.logout-btn:hover {
+  color: var(--color-sidebar-text-active);
+  background: var(--color-sidebar-border);
+}
+
+
+/* ─────────────────────────────────────────────────────────
+   12) Vue Transitions
+   ───────────────────────────────────────────────────────── */
+.fade-enter-active {
+  transition: opacity 0.2s ease 0.1s;
+}
+
+.fade-leave-active {
+  transition: opacity 0.1s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
