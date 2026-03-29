@@ -8,6 +8,8 @@ const ServiceRoutes = require('./route/ServiceRoute');
 const MeasurementRoutes = require('./route/MeasurementRoute');
 const CustomerRoutes = require('./route/CustomerRoute');
 const MemberRoutes = require('./route/MemberRoute');
+const roleRoute = require('./route/RoleRoute');
+const PermissionRoute = require('./route/PermissionRoute');
 
 //for frontend use before route
 app.use(cors({
@@ -21,12 +23,13 @@ app.use(cors({
 app.use(express.json());
 
 // Routes
-// --- แก้ไขส่วนนี้ใน app.js ---
-app.use('/api/member', MemberRoutes);      // ย้าย member ไปไว้ที่ /api/member
-app.use('/api/device', DeviceRoutes);      // ย้าย device ไปไว้ที่ /api/device
+app.use('/api/member', MemberRoutes);
+app.use('/api/device', DeviceRoutes);
 app.use('/api/topic', TopicRoutes);
 app.use('/api/service', ServiceRoutes); 
 app.use('/api/measurement', MeasurementRoutes);
 app.use('/api/customer', CustomerRoutes);
+app.use('/api/management', roleRoute);
+app.use('/api/management', PermissionRoute);
 
 module.exports = app;

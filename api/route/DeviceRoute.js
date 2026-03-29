@@ -3,18 +3,19 @@ const router = express.Router();
 const device = require('../controller/DeviceController');
 const auth = require('../lib/authentication');
 
-//GET METHOD//
+// --- GET METHOD ---
 router.get('/getDevice', auth, device.getDevice);
-router.get('/getDeviceBy', auth, device.getDeviceById);
-router.get('/search', auth, device.searchDevice);
+router.get('/getDeviceById', auth, device.getDeviceById);
+router.get('/searchDevice', auth, device.searchDevice);
+router.get('/summary', auth, device.getDeviceSummary);
+router.get('/master', auth, device.getFormMaster);
 
-//POST METHOD//
+// --- POST METHOD ---
+router.post('/addDevice', auth, device.addDevice);
 
-//PUT METHOD//
-router.put('/addDevice', auth, device.addDevice);
+// --- PUT METHOD ---
+router.put('/editDevice', auth, device.editDevice);
 router.put('/setDeviceActive', auth, device.setDeviceActive);
-
-//PATCH METHOD//
-router.patch('/editDevice', auth, device.editDevice);
+router.put('/:id', auth, device.deleteDevice);
 
 module.exports = router;

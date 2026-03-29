@@ -1,0 +1,9 @@
+# TOPIC_ID: TOP00001
+[[inputs.mqtt_consumer]]
+servers = ["tcp://undefined:undefined"]
+topics = ["undefined"]
+qos = 0
+connection_timeout = "30s"
+data_format = "json"
+tag_keys = ["MFEC_energyMeter002"]
+name_override = "MFEC_energyMeter002"
